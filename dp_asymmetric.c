@@ -152,9 +152,14 @@ static void *dp_thread(void *arg)
     /*
      * Grab both chopsticks: ASYMMETRIC and WAITER SOLUTION
      */
+    if(me->id & 2){
     pthread_mutex_lock(left_chop(me));
     pthread_mutex_lock(right_chop(me));
-
+    }
+    else{
+       pthread_mutex_lock(right_chop(me));
+       pthread_mutex_lock(left_chop(me));
+    }
     /*
      * Eat some random amount of food. Again, this involves a
      * subroutine call for each mouthful, which is a feature, not a
