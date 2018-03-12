@@ -46,6 +46,6 @@ zip:
 	cp Makefile dining_philosophers.c dp_asymmetric.c dp_waiter.c $(STUDENT_ID)-pthreads_dp-lab/
 	mv *-c.txt $(STUDENT_ID)-pthreads_dp-lab/
 #	copy the pdf writeup file
-	cp $(STUDENT_ID)-write-up.pdf $(STUDENT_ID)-pthreads_dp-lab
+
 	zip -r $(STUDENT_ID)-pthreads_dp-lab.zip $(STUDENT_ID)-pthreads_dp-lab
 	rm -rf $(STUDENT_ID)-pthreads_dp-lab
