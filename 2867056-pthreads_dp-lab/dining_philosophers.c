@@ -124,12 +124,8 @@ static void *dp_thread(void *arg)
   philosopher *me;
   int          think_rnd;
 
-  int *left;
-  int *right;
-
   me = (philosopher *) arg;
   id = me->id;
-
 
   /*
    * While the gobal Stop flag is not set, keep thinking and eating
@@ -156,18 +152,8 @@ static void *dp_thread(void *arg)
     /*
      * Grab both chopsticks: ASYMMETRIC and WAITER SOLUTION
      */
-    // pthread_mutex_lock(left_chop(me));
-    // pthread_mutex_lock(right_chop(me));
-
-    pthread_mutex_lock(&waiter);
-    while(!(left_chop_available(me)&&right_chop_available(me)))
-    {
-        pthread_cond_wait(&(me->can_eat),&waiter);
-    }
-
-    *(left_chop_available(me)) = 0;
-    *(right_chop_available(me)) = 0;
-    pthread_mutex_unlock(&waiter);
+    pthread_mutex_lock(left_chop(me));
+    pthread_mutex_lock(right_chop(me));
 
     /*
      * Eat some random amount of food. Again, this involves a
@@ -181,17 +167,10 @@ static void *dp_thread(void *arg)
     /*
      * Release both chopsticks: WAITER SOLUTION
      */
-    // pthread_mutex_unlock(right_chop(me));
-    // pthread_mutex_unlock(left_chop(me));
+    pthread_mutex_unlock(right_chop(me));
+    pthread_mutex_unlock(left_chop(me));
 
-
-    pthread_mutex_lock(&waiter);
-
-    *(left_chop_available(me)) = 2;
-    *(right_chop_available(me)) = 2;
-
-    pthread_mutex_unlock(&waiter);
-    /*
+    /* 
      * Update my progress in current session and for all time.
      */
     me->prog++;
