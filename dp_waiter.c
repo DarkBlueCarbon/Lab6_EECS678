@@ -165,8 +165,8 @@ static void *dp_thread(void *arg)
         pthread_cond_wait(&(me->can_eat),&waiter);
     }
 
-
-
+    *(left_chop_available(me)) = 0;
+    *(right_chop_available(me)) = 0;
     pthread_mutex_unlock(&waiter);
 
     /*
@@ -187,6 +187,8 @@ static void *dp_thread(void *arg)
 
     pthread_mutex_lock(&waiter);
 
+    *(left_chop_available(me)) = 2;
+    *(right_chop_available(me)) = 2;
 
     pthread_mutex_unlock(&waiter);
     /*
